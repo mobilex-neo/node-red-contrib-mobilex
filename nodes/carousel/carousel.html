@@ -1,0 +1,31 @@
+<script type="text/javascript">
+	RED.nodes.registerType('mobilex-carousel', {
+	  category: 'mobilex',
+	  color: '#ffcc66',
+	  icon: 'font-awesome/fa-clone',
+	  inputs: 1,
+	  outputs: 1,
+	  defaults: {
+		name: { value: "" },
+		title: { value: "Carousel" },
+		navBackground: { value: "#482073" },
+		carouselTemplate: { value: "CAROUSEL-B" },
+		carouselBackground: { value: "#ffffff" },
+		itemColor: { value: "#000000" },
+		backgroundField: { value: "{{imagem}}" },
+		textField: { value: "{{texto}}" }
+	  },
+	  label: function () {
+		return this.name || "mobileX Carousel";
+	  }
+	});
+  </script>
+   <script type="text/html" data-template-name="mobilex-carousel"> 
+  <div class="form-row"><label>Título Navegação</label><input type="text" id="node-input-title"></div>
+  <div class="form-row"><label>Cor Fundo Navegação</label><input type="color" id="node-input-navBackground"></div>
+  <div class="form-row"><label>Template</label><input type="text" id="node-input-carouselTemplate"></div>
+  <div class="form-row"><label>Cor Fundo</label><input type="color" id="node-input-carouselBackground"></div>
+  <div class="form-row"><label>Cor Item</label><input type="color" id="node-input-itemColor"></div>
+  <div class="form-row"><label>Campo Imagem (bg)</label><input type="text" id="node-input-backgroundField"></div>
+  <div class="form-row"><label>Campo Texto</label><input type="text" id="node-input-textField"></div>
+</script>
