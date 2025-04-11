@@ -2,19 +2,32 @@
 	"name": "node-red-contrib-mobilex",
 	"version": "1.0.0",
 	"description": "Nós Node-RED para gerar interfaces mobileX usando a linguagem X",
-	"keywords": ["node-red", "mobilex", "low-code", "interface", "mobile"],
+	"keywords": [
+		"node-red",
+		"mobilex",
+		"low-code",
+		"interface",
+		"mobile"
+	],
 	"node-red": {
-	  "nodes": {
-		"list-view": "nodes/list-view/list-view.js",
-		"carousel": "nodes/carousel/carousel.js",
-		"header": "nodes/header/header.js",
-		"form": "nodes/form/form.js"
-	  }
+		"nodes": {
+			"list-view": "nodes/list-view/list-view.js",
+			"group-list": "nodes/group-list/group-list.js",
+			"carousel": "nodes/carousel/carousel.js",
+			"header": "nodes/header/header.js",
+			"form": "nodes/form/form.js",
+			"action": "nodes/actions/actions.js",
+			"itemlist": "nodes/item-list/item-list.js",
+			"parameter": "nodes/parameter/parameter.js",
+			"mobilex-navigation": "nodes/mobilex-navigation/mobilex-navigation.js",
+			"page": "nodes/page/page.js",
+			"page-content": "nodes/page-content/content.js",
+			"detail": "nodes/detail/detail.js"
+		}
 	},
 	"dependencies": {
-	  "mustache": "^4.2.0"
+		"mustache": "^4.2.0"
 	},
 	"author": "Luiz Carvalho",
 	"license": "MIT"
-  }
-  
+}

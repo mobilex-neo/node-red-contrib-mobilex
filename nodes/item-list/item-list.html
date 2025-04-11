@@ -1,0 +1,58 @@
+<script type="text/javascript">
+	RED.nodes.registerType('mobilex-item-list', {
+		category: 'mobilex',
+		color: '#66ccff',
+		icon: 'font-awesome/fa-list',
+		inputs: 1,
+		outputs: 1,
+		defaults: {
+			name: {value: ""},
+			publishLevel: {value: 1},
+			permissionLevel: {value: 1},
+			background: {value: "#FFF"},
+			color: {value: "#FFF"},
+			details: {value: '[{"order":0,"value":".."}]'},
+			actionDefault: {value: 0},
+			actions: {value: "[]"}
+		},
+		label: function () {
+			return this.name || "MobileX Item List";
+		},
+		oneditprepare: function () {
+			$("#node-input-name").val(this.name);
+			$("#node-input-publishLevel").val(this.publishLevel);
+			$("#node-input-permissionLevel").val(this.permissionLevel);
+			$("#node-input-background").val(this.background);
+			$("#node-input-color").val(this.color);
+		}
+	});
+</script>
+
+<script type="text/html" data-template-name="mobilex-item-list">
+    <div class="form-row">
+        <label>Nome</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label>Nível de Publicação</label>
+        <input type="number" id="node-input-publishLevel">
+    </div>
+    <div class="form-row">
+        <label>Nível de Permissão</label>
+        <input type="number" id="node-input-permissionLevel">
+    </div>
+    <div class="form-row">
+        <label>Cor de Fundo</label>
+        <input type="color" id="node-input-background">
+    </div>
+    <div class="form-row">
+        <label>Cor do Texto</label>
+        <input type="color" id="node-input-color">
+    </div>
+		<div style="background-color: rgb(86 225 160 / 0.25); height: 50px; align-content: center; padding-left: 5px; font-weight: bold;">Se necessitar de acritons informar o nodes necessários na entrada</div>
+</script>
+
+<script type="text/html" data-help-name="mobilex-item-list">
+	<span>Inputs</span>
+	<div style="width: 10px;background-color: red; height: 15px; border-radius: 5px;">Actions</div>
+</script>
