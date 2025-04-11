@@ -1,0 +1,51 @@
+<script type="text/javascript">
+	RED.nodes.registerType('mobilex-page', {
+		category: 'mobilex',
+		color: '#4CAF50',
+		icon: 'font-awesome/fa-file',
+		inputs: 1,  // Uma entrada para cada seção
+		outputs: 1,
+		defaults: {
+			componentes: {value: []},
+			tab: {value: false},
+			outputs: {value: 1, validate: RED.validators.number()}
+		},
+		label: function () {
+			return "MobileX Page";
+		},
+		oneditprepare: function () {
+			let selecionados = this.componentes || [];
+			$("#campo-tab").hide();
+			$("#node-input-componentes").val(selecionados);
+			$("#node-input-componentes").change(function () {
+				let valor = $(this).val();
+				if (valor.includes("pageContent")) {
+					$("#contem-tab").show()
+				} else {
+					$("#contem-tab").hide();
+				};
+				selecionados = valor || [];
+			});
+		},
+		oneditsave: function () {
+			this.componentes = $("#node-input-componentes").val() || [];
+			this.tab = $("#node-input-tab").val();
+		}
+	});
+</script>
+
+<script type="text/html" data-template-name="mobilex-page">
+		<div class="form-row">
+		<label for="node-input-componentes"><i class="fa fa-list"></i>Componentes da tela</label>
+        <select id="node-input-componentes" multiple>
+            <option value="pageContent">Page Content</option>
+            <option value="pageHeader">Page Header</option>
+            <option value="pageSearch">Page Search</option>
+            <option value="pageFooter">Page Footer</option>
+        </select>
+		</div>
+		<!-- <div class="form-row" id="contem-tab"> -->
+		<!-- <label>Conteúdo da página será dividido em tabulação?</label> -->
+		<!-- 	<input type="checkbox" id="node-input-tab"></input> -->
+		<!-- </div> -->
+</script>
