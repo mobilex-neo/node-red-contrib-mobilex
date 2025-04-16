@@ -5,18 +5,39 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     const node = this;
 
-    node.on("input", function (msg) {
-      const header = {
-        template: config.template,
-        background: config.background,
-        color: config.color,
-        item: {
-          details: [{ order: 0, value: mustache.render(config.text, msg) }],
-        },
-      };
-      msg.payload.pageHeader = header;
-      msg.topic = "pageHeader";
-      node.send(msg);
+    const buffer = new Map();
+
+    node.on("input", function (msg, send, done) {
+      const groupID = msg.groupId;
+      const flow = node.context().flow;
+
+      const expectNumberCountsInputs = msg.expectNumberCountsOutput;
+
+      if (!buffer.has(groupID)) {
+        buffer.set(groupID, { expectNumberCountsInputs, count: 0 });
+      }
+
+      const group = buffer.get(groupID);
+      group.count++;
+
+      if (group.count >= group.expectNumberCountsInputs) {
+        console.log(`chegou o envio ${group.count}`);
+        let page = flow.get("page");
+        const header = {
+          template: config.template,
+          background: config.background,
+          color: config.color,
+          item: {
+            details: [],
+            actions: [],
+          },
+        };
+        msg.payload = page;
+        msg.topic = "pageHeader";
+        page.pageHeader = header;
+        buffer.delete(groupID);
+        node.send(msg);
+      }
     });
   }
 

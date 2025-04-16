@@ -4,6 +4,7 @@ module.exports = function (RED) {
     var node = this;
 
     node.on("input", function (msg) {
+      let input_node = msg.payload;
       let flow = this.context().flow;
       flow.set("tab", config.tab);
       const obj = config.componentes.reduce((acc, key) => {
@@ -17,9 +18,9 @@ module.exports = function (RED) {
         return acc;
       }, {});
       msg.topic = "page";
-      msg.payload = obj;
-      console.log("asdckjasdkj");
-      console.log(obj);
+      flow.set("page", obj);
+      msg.payload = input_node;
+      msg.input = input_node;
       node.send(msg);
     });
   }
