@@ -1,4 +1,5 @@
 const Page = require("../../lib/page.js");
+const mustache = require("mustache");
 
 module.exports = function (RED) {
   function MobilexTemplateNode(config) {
@@ -6,32 +7,33 @@ module.exports = function (RED) {
     var node = this;
 
     node.on("input", function (msg) {
-      // console.log(`to aqui ${JSON.stringify(msg.payload)}`);
+      const flow = node.context().flow;
       try {
+        let node_input = msg.input;
         let templateData = {
-          template: config.template || "A",
-          title: config.title || "Grupo ABC",
-          background: config.background || "#A11480",
-          color: config.color || "#FFF",
+          template: mustache.render(config.template, node_input),
+          title: mustache.render(config.title, node_input),
+          background: mustache.render(config.background, node_input),
+          color: mustache.render(config.color, node_input),
           actions: [],
           itemList: [],
         };
 
-        const flow = node.context().flow;
         const temTab = flow.get("tab");
+        const page = flow.get("page");
 
         if (temTab) {
-          msg.payload.pageContent.contentList.push({
+          page.pageContent.contentList.push({
             groupList: templateData,
           });
         } else {
-          msg.payload.pageContent = {
+          page.pageContent = {
             groupList: templateData,
           };
         }
-        // console.log(`to aqui ${JSON.stringify(msg.payload)}`);
-        // const pageResult = new Page("pageGroupList", templateData);
+        console.log(`pega o page ${JSON.stringify(flow.get("page"))}`);
         msg.topic = "groupList";
+        msg.expectNumberCountsOutput = node.wires[0].length;
         node.send(msg);
       } catch (err) {
         node.error("Erro ao processar o template", err);
