@@ -1,6 +1,6 @@
 {
 	"name": "node-red-contrib-mobilex",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "Nós Node-RED para gerar interfaces mobileX usando a linguagem X",
 	"keywords": [
 		"node-red",
@@ -14,12 +14,11 @@
 			"list-view": "nodes/list-view/list-view.js",
 			"group-list": "nodes/group-list/group-list.js",
 			"carousel": "nodes/carousel/carousel.js",
-			"header": "nodes/header/header.js",
+			"header": "nodes/page-header/header.js",
 			"form": "nodes/form/form.js",
 			"action": "nodes/actions/actions.js",
 			"itemlist": "nodes/item-list/item-list.js",
 			"parameter": "nodes/parameter/parameter.js",
-			"mobilex-navigation": "nodes/mobilex-navigation/mobilex-navigation.js",
 			"page": "nodes/page/page.js",
 			"page-content": "nodes/page-content/content.js",
 			"detail": "nodes/detail/detail.js"
