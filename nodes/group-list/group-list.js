@@ -1,4 +1,3 @@
-const Page = require("../../lib/page.js");
 const mustache = require("mustache");
 
 module.exports = function (RED) {
@@ -31,7 +30,6 @@ module.exports = function (RED) {
             groupList: templateData,
           };
         }
-        console.log(`pega o page ${JSON.stringify(flow.get("page"))}`);
         msg.topic = "groupList";
         msg.expectNumberCountsOutput = node.wires[0].length;
         node.send(msg);
