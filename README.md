@@ -137,13 +137,15 @@ Esse nó gera um **carrossel horizontal** de imagens ou textos.
 ---
 ## Contribuindo 
 
-1. **Clone o repositório:** 
+1. **Clone o repositório:**
+   
 ```bash 
 git clone https://github.com/seu-usuario/node-red-contrib-mobilex.git 
 cd node-red-contrib-mobilex 
 ``` 
 
-2. **Faça modificações e instale localmente:** 
+2. **Faça modificações e instale localmente:**
+   
 ```bash
 npm install 
 ```
