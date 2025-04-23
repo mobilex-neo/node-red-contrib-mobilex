@@ -1,25 +1,25 @@
 <script type="text/javascript">
 	RED.nodes.registerType('mobilex-header', {
-	  category: 'mobileX Front',
-	  color: '#8cc665',
-	  icon: 'font-awesome/fa-header',
-	  inputs: 1,
-	  outputs: 1,
-	  defaults: {
-		name: { value: "" },
-		template: { value: "A" },
-		background: { value: "#482073" },
-		color: { value: "#ffffff" },
-		text: { value: "Cabeçalho {{msg.header.title}}" }
-	  },
-	  label: function () {
-		return this.name || "mobileX Header";
-	  }
+		category: 'mobileX Front',
+		color: '#8cc665',
+		icon: 'font-awesome/fa-header',
+		inputs: 1,
+		outputs: 1,
+		defaults: {
+			name: {value: ""},
+			template: {value: "A"},
+			background: {value: "#482073"},
+			color: {value: "#ffffff"},
+			logo: {value: ""}
+		},
+		label: function () {
+			return this.name || "mobileX Header";
+		}
 	});
-  </script>
- <script type="text/html" data-template-name="mobilex-header"> 
-  <div class="form-row"><label>Texto do Cabeçalho</label><input type="text" id="node-input-text"></div>
+</script>
+<script type="text/html" data-template-name="mobilex-header">
+  <div class="form-row"><label>logo</label><input type="text" id="node-input-logo"></div>
   <div class="form-row"><label>Template</label><input type="text" id="node-input-template"></div>
   <div class="form-row"><label>Cor de Fundo</label><input type="color" id="node-input-background"></div>
   <div class="form-row"><label>Cor do Texto</label><input type="color" id="node-input-color"></div>
-</script>  
+</script>

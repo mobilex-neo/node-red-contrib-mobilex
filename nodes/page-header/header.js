@@ -21,12 +21,12 @@ module.exports = function (RED) {
       group.count++;
 
       if (group.count >= group.expectNumberCountsInputs) {
-        console.log(`chegou o envio ${group.count}`);
         let page = flow.get("page");
         const header = {
           template: config.template,
           background: config.background,
           color: config.color,
+          logo: config.logo,
           item: {
             details: [],
             actions: [],
