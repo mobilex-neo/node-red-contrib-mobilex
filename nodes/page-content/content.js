@@ -19,11 +19,13 @@ module.exports = function (RED) {
     node.on("input", function (msg) {
       let flow = this.context().flow;
       let temTab = flow.get("tab");
+      const page = flow.get("page");
 
       if (temTab) {
-        msg.payload.pageContent.contentList.push(node.pageContent);
+        page.pageContent.contentList.push(node.pageContent);
+        msg.index_content = page.pageContent.contentList.length - 1;
       } else {
-        msg.payload.pageContent = node.pageContent;
+        page.pageContent = node.pageContent;
       }
 
       msg.payload = node.pageContent;

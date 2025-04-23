@@ -30,6 +30,7 @@ module.exports = function (RED) {
           item: {
             details: [],
             actions: [],
+            actionDefault: null,
           },
         };
         msg.payload = page;

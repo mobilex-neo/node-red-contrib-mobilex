@@ -5,10 +5,6 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     var node = this;
     node.on("input", function (msg) {
-      const flow = node.context().flow;
-      let page = flow.get("page");
-      console.log(`topic ${msg.topic}`);
-      console.log(`Aqui esta Actions Item List ${JSON.stringify(page)}`);
       let action = {
         order: parseInt(config.order) || 0,
         name: mustache.render(config.name || "", msg.input),
@@ -19,22 +15,31 @@ module.exports = function (RED) {
         path: mustache.render(config.path || "", msg.input),
         parameters: [],
       };
-      let index = msg.index;
+
+      const flow = node.context().flow;
+      const page = flow.get("page");
+      const index_content = msg.index_content;
+      const temTab = flow.get("tab");
+      const index = msg.index;
+      const index_host = msg.host;
 
       switch (msg.topic) {
         case "itemList":
-          console.log("ola");
-          page.pageContent.groupList.itemList[index].actions?.push(action);
+          if (temTab) {
+            page.pageContent.contentList[index_content].groupList[
+              index_host
+            ].itemList[index].actions?.push(action);
+          } else {
+            page.pageContent.groupList[index_host].itemList[
+              index
+            ].actions?.push(action);
+          }
           break;
         case "pageHeader":
-          console.log("ola2");
-          console.log(msg.topic);
           page.pageHeader.item.actions?.push(action);
         case "groupList":
-          console.log("ola3");
           page.pageContent.groupList.actions?.push(action);
         case "sectionList":
-          console.log("ola4");
           page.pageContent.sectionList[index].actions.push(action);
         case "section":
           page.pageContent.sectionList[index].actions.push(action);
