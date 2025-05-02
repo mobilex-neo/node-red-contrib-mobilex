@@ -1,44 +1,30 @@
-const mustache = require("mustache");
-
 module.exports = function (RED) {
   function MobileXHeader(config) {
     RED.nodes.createNode(this, config);
     const node = this;
 
-    const buffer = new Map();
-
     node.on("input", function (msg, send, done) {
-      const groupID = msg.groupId;
       const flow = node.context().flow;
+      const page = flow.get("page");
 
-      const expectNumberCountsInputs = msg.expectNumberCountsOutput;
-
-      if (!buffer.has(groupID)) {
-        buffer.set(groupID, { expectNumberCountsInputs, count: 0 });
-      }
-
-      const group = buffer.get(groupID);
-      group.count++;
-
-      if (group.count >= group.expectNumberCountsInputs) {
-        let page = flow.get("page");
-        const header = {
-          template: config.template,
-          background: config.background,
-          color: config.color,
-          logo: config.logo,
-          item: {
-            details: [],
-            actions: [],
-            actionDefault: null,
-          },
-        };
-        msg.payload = page;
-        msg.topic = "pageHeader";
-        page.pageHeader = header;
-        buffer.delete(groupID);
-        node.send(msg);
-      }
+      console.log(`HEADER ${JSON.stringify(page)}`);
+      const header = {
+        template: config.template,
+        background: config.background,
+        color: config.color,
+        logo: config.logo,
+        item: {
+          details: [],
+          actions: [],
+          actionDefault: null,
+        },
+      };
+      page.pageHeader = header;
+      console.log("numbeer Header", msg.expectNumberCountsOutput);
+      msg.payload = page;
+      console.log(`HEADER After ${JSON.stringify(page)}`);
+      msg.topic = "pageHeader";
+      node.send(msg);
     });
   }
 

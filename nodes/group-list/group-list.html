@@ -2,7 +2,7 @@
 	RED.nodes.registerType('mobilex-group-list', {
 		category: 'mobileX Front',
 		color: '#ff9966',
-		icon: 'font-awesome/fa-file',
+		icon: 'font-awesome/fa-layer-group',
 		inputs: 1,
 		outputs: 1,
 		defaults: {
@@ -12,7 +12,6 @@
 			background: {value: "#A11480"},
 			color: {value: "#FFF"},
 			actions: {value: "[]"},
-			itemsList: {}
 		},
 		label: function () {
 			return this.name || "MobileX Group List";
@@ -41,14 +40,6 @@
         <label>Cor do Texto</label>
         <input type="color" id="node-input-color">
     </div>
-    <!-- <div class="form-row"> -->
-    <!--     <label>Ações (JSON)</label> -->
-    <!--     <input type="text" id="node-input-actions"> -->
-    <!-- </div> -->
-    <!-- <div class="form-row"> -->
-    <!--     <label>Items List (JSON)</label> -->
-    <!--     <textarea id="node-input-itemsList" rows="5"></textarea> -->
-    <!-- </div> -->
 </script>
 
 <script type="text/html" data-help-name="mobilex-group-list">
@@ -64,16 +55,6 @@
 			<li>Template Carousel: utilizado para apresentar imagens em formato de carrossel.</liv>
 		<ul>
 		</div>
-	<h3>Inputs</h3>
-		<dl class="message-properties">
-			<dt>input
-				<span class="property-type">Object</span>
-			</dt>
-			<dt>actions<dt>
-			<dd>Lista de ações para o agrupamento</dd>
-			<dt>itemList</dt>
-			<dd>Lista de itens do agrupamento.</dt>
-		</dl>
   <h3>Outputs</h3>
        <dl class="message-properties">
 				 <dt>payload
@@ -87,23 +68,9 @@
 					"background": "#A11480",
 					"color": "#FFF",
 					"actions": [],
-					"itemsList": [
-						{
-							"publishLevel": 1,
-							"permissionLevel": 1,
-							"background": "#FFF",
-							"color": "#FFF",
-							"details": [
-								{"order": 0, "value": ".."}
-							],
-							"actionDefault": 0,
-							"actions": []
-						}
-					]
+					"itemsList": []
 				}
 				</pre>
 				</dd>
 			</dl>
-   <h3>Details</h3>
-   <p></p>
 </script>

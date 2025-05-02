@@ -8,7 +8,9 @@
 		defaults: {
 			componentes: {value: []},
 			tab: {value: false},
-			outputs: {value: 1, validate: RED.validators.number()}
+			outputs: {value: 1, validate: RED.validators.number()},
+			timeout: {value: 1},
+			wiresTo: {value: false},
 		},
 		label: function () {
 			return "MobileX Page";
@@ -25,11 +27,15 @@
 					$("#contem-tab").hide();
 				};
 				selecionados = valor || [];
+				$("#node-input-outputs").val(selecionados.length);
 			});
 		},
 		oneditsave: function () {
 			this.componentes = $("#node-input-componentes").val() || [];
 			this.tab = $("#node-input-tab").val();
+			this.timeout = $("#node-input-timeout").val();
+			this.path = $("#node-input-path").val();
+			this.wiresTo = $("#node-input-wiresTo").val();
 		}
 	});
 </script>
@@ -42,10 +48,46 @@
             <option value="pageHeader">Page Header</option>
             <option value="pageSearch">Page Search</option>
             <option value="pageFooter">Page Footer</option>
+            <option value="pageNavigation">Page Navigation</option>
         </select>
 		</div>
 		<div class="form-row" id="contem-tab">
-		<label>Conteúdo da página será dividido em tabulação?</label>
-			<input type="checkbox" id="node-input-tab"></input>
+			<label for="tab">Conteúdo da página será dividido em tabulação?</label>
+			<input type="checkbox" name="tab" id="node-input-tab"></input>
 		</div>
+		<div class="form-row" id="timeout">
+			<label for="timeout">Timeout da requisição</label>
+			<input type="text" name="timeout" id="node-input-timeout"></input>
+		</div>
+		<div class="form-row" id="path">
+			<label for="path">Chaminho do array no json</label>
+			<input type="text" name="path" id="node-input-path"></input>
+		</div>
+		<div class="form-row" id="number_wire">
+			<label for="wires">Aguardar pela quantidades de mensagem</label>
+			<input type="checkbox" name="wires" id="node-input-wiresTo"></input>
+		</div>
+		<div class="form-row" style="display: inline-block; margin-right: 50px;"> -->
+			<label for="node-input-outputs"><i class="fa fa-random"></i> <span data-i18n="function.label.outputs"></span></label>
+			<input id="node-input-outputs" style="width: 60px;" value="1">
+		</div>
+</script>
+<script type="text/html" data-help-name="mobilex-page">
+	<p>Instrução de uso do node</p>
+			 <h3>Outputs</h3>
+					 <dl class="message-properties">
+					 <dt>payload
+							 <span class="property-type">object | buffer</span>
+							 <pre><code>{
+							 	"pageContent": {},
+								"pageHeader": {},
+								"pageFooter": {},
+								"pageNavigation": {},
+								"pageSearch": {},
+							 }</code></pre>
+					 </dt>
+			 <h3>Details</h3>
+			 <p>Pode ser definido um tempo de espera em segundo, que cada node em sequência aguardará para executar o proximo, definindo o timeout</p>
+			 <p>Caso seja selecionado para aguardar pela quantidades de mensagem, o tempo não será levado em consideração. Mas sim pelo tamanho do array de mensagens recebidas.</p>
+			 <p>O tamanho sempre será definido pelo array do json recebido de maior numero de elementos, caso não seja este comportamento informar o path no json que conterá o array a ser utilizado.</p>
 </script>

@@ -11,21 +11,20 @@
 	],
 	"node-red": {
 		"nodes": {
-			"list-view": "nodes/list-view/list-view.js",
-			"group-list": "nodes/group-list/group-list.js",
-			"carousel": "nodes/carousel/carousel.js",
-			"header": "nodes/page-header/header.js",
-			"form": "nodes/form/form.js",
 			"action": "nodes/actions/actions.js",
-			"itemlist": "nodes/item-list/item-list.js",
+			"detail": "nodes/detail/detail.js",
+			"group-list": "nodes/group-list/group-list.js",
+			"item-list": "nodes/item-list/item-list.js",
 			"page": "nodes/page/page.js",
 			"page-content": "nodes/page-content/content.js",
-			"detail": "nodes/detail/detail.js"
+			"page-header": "nodes/page-header/header.js",
+			"page-join": "nodes/page-join/join.js",
+			"page-navigation": "nodes/page-navigation/navigation.js",
+			"parameter": "nodes/parameter/parameter.js"
 		}
 	},
 	"dependencies": {
-		"mustache": "^4.2.0",
-		"node-red-contrib-neo": "~1.1.13"
+		"nunjucks": "^3.2.4"
 	},
 	"author": "Luiz Carvalho",
 	"license": "MIT"

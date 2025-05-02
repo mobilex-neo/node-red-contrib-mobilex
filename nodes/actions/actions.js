@@ -1,54 +1,74 @@
-const mustache = require("mustache");
+const nun = require("nunjucks");
+const { buildTargetPath } = require("../../util/join_helper");
 
 module.exports = function (RED) {
   function MobilexActionNode(config) {
     RED.nodes.createNode(this, config);
     var node = this;
-    node.on("input", function (msg) {
+    node.on("input", function (msg, send, done) {
       let action = {
         order: parseInt(config.order) || 0,
-        name: mustache.render(config.name || "", msg.input),
+        name: nun.renderString(config.name || "", msg.input),
         publishLevel: parseInt(config.publishLevel) || 1,
         permissionLevel: parseInt(config.permissionLevel) || 1,
-        title: mustache.render(config.title || "", msg.input),
-        icon: mustache.render(config.icon || "", msg.input),
-        path: mustache.render(config.path || "", msg.input),
+        title: nun.renderString(config.title || "", msg.input),
+        icon: nun.renderString(config.icon || "", msg.input),
+        path: nun.renderString(config.path || "", msg.input),
         parameters: [],
       };
-
+      console.log("ACTION ENVIO -----------------------");
       const flow = node.context().flow;
       const page = flow.get("page");
-      const index_content = msg.index_content;
       const temTab = flow.get("tab");
+      const index_content = msg.index_content;
       const index = msg.index;
       const index_host = msg.host;
 
       switch (msg.topic) {
-        case "itemList":
+        case "itemsList":
+          msg.index_intem = msg.index;
           if (temTab) {
             page.pageContent.contentList[index_content].groupList[
               index_host
-            ].itemList[index].actions?.push(action);
+            ].itemsList[index].actions?.push(action);
+
+            msg.index =
+              page.pageContent.contentList[index_content].groupList[index_host]
+                .itemsList[index].actions.length - 1;
           } else {
-            page.pageContent.groupList[index_host].itemList[
+            page.pageContent.groupList[index_host].itemsList[
               index
             ].actions?.push(action);
+            msg.index =
+              page.pageContent.groupList[index_host].itemsList[index].actions
+                .length - 1;
           }
           break;
         case "pageHeader":
           page.pageHeader.item.actions?.push(action);
+          break;
         case "groupList":
           page.pageContent.groupList.actions?.push(action);
+          break;
         case "sectionList":
           page.pageContent.sectionList[index].actions.push(action);
+          break;
         case "section":
           page.pageContent.sectionList[index].actions.push(action);
+          break;
         case "historyList":
           page.pageContent.HistoryList[index].actions?.push(action);
+          break;
         case "pageFooter":
           page.pageFooter.actions.push(action);
+          break;
+        case "pageNavigation":
+          page.pageNavigation.left.actions.push(action);
+          break;
       }
-      node.send(msg);
+      msg.topic = "Action";
+      msg.path = buildTargetPath(msg.path, ["actions", msg.index]);
+      send(msg);
     });
   }
   RED.nodes.registerType("mobilex-action", MobilexActionNode);

@@ -1,0 +1,20 @@
+<script type="text/html" data-template-name="mobilex-join">
+    <div class="form-row">
+        <label>Nome</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('mobilex-join', {
+		category: 'mobileX Front',
+		color: '#ffcc66',
+		icon: 'font-awesome/fa-info-circle',
+		inputs: 1,
+		outputs: 1,
+		defaults: {},
+		label: function () {
+			return this.name || "MobileX Page Join";
+		},
+	});
+</script>
