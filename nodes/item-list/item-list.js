@@ -1,4 +1,5 @@
-const mustache = require("mustache");
+const nun = require("nunjucks");
+const { buildTargetPath } = require("../../util/join_helper");
 
 module.exports = function (RED) {
   function MobilexItemNode(config) {
@@ -7,19 +8,16 @@ module.exports = function (RED) {
 
     node.on("input", function (msg) {
       const flow = this.context().flow;
-
+      msg.host = msg.index;
       let item = {
         publishLevel: parseInt(config.publishLevel) || 1,
         permissionLevel: parseInt(config.permissionLevel) || 1,
-        background: mustache.render(config.background || "#FFF", msg.input),
-        color: mustache.render(config.color || "#FFF", msg.input),
+        background: nun.renderString(config.background || "#FFF", msg.input),
+        color: nun.renderString(config.color || "#FFF", msg.input),
         details: [],
         actionDefault: parseInt(config.actionDefault) || 0,
         actions: [],
       };
-
-      msg.topic = "itemList";
-      msg.host = msg.index;
 
       let page = flow.get("page");
       let temTab = flow.get("tab");
@@ -28,15 +26,18 @@ module.exports = function (RED) {
       if (temTab) {
         page.pageContent.contentList[index_content].groupList[
           msg.index
-        ].itemList.push(item);
+        ].itemsList.push(item);
 
         msg.index =
           page.pageContent.contentList[index_content].groupList[msg.index]
-            .itemList.length - 1;
+            .itemsList.length - 1;
       } else {
-        page.pageContent.groupList[msg.index].itemList.push(item);
-        msg.index = page.pageContent.groupList[msg.index].itemList.length - 1;
+        page.pageContent.groupList[msg.index].itemsList.push(item);
+        msg.index = page.pageContent.groupList[msg.index].itemsList.length - 1;
       }
+
+      msg.topic = "itemsList";
+      msg.path = buildTargetPath(msg.path, ["itemsList", msg.index]);
       node.send(msg);
     });
   }

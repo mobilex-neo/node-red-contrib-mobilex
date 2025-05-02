@@ -1,21 +1,3 @@
-<script type="text/javascript">
-	RED.nodes.registerType('mobilex-detail', {
-		category: 'mobileX Front',
-		color: '#ffcc66',
-		icon: 'font-awesome/fa-info-circle',
-		inputs: 1,
-		outputs: 1,
-		defaults: {
-			name: {value: ""},
-			order: {value: 0},
-			value: {value: ""}
-		},
-		label: function () {
-			return this.name || "MobileX Detail";
-		}
-	});
-</script>
-
 <script type="text/html" data-template-name="mobilex-detail">
     <div class="form-row">
         <label>Nome</label>
@@ -26,7 +8,93 @@
         <input type="number" id="node-input-order">
     </div>
     <div class="form-row">
-        <label>Valor</label>
-        <input type="text" id="node-input-value">
+			<label>Valor</label>
+			<button type="button" id="node-template-expand-editor" class="red-ui-button red-ui-button-small"><i class="fa fa-expand"></i></button>
     </div>
+		<div class="form-row node-text-editor-row">
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-template-editor" ></div>
+    </div>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('mobilex-detail', {
+		category: 'mobileX Front',
+		color: '#ffcc66',
+		icon: 'font-awesome/fa-info-circle',
+		inputs: 1,
+		outputs: 0,
+		defaults: {
+			name: {value: ""},
+			order: {value: 0},
+			value: {value: ""},
+		},
+		label: function () {
+			return this.name || "MobileX Detail";
+		},
+		oneditprepare: function () {
+			const that = this;
+			const stateId = RED.editor.generateViewStateId("node", this, "");
+			this.editor = RED.editor.createEditor({
+				id: 'node-input-template-editor',
+				mode: 'ace/mode/html',
+				stateId: stateId,
+				value: this.value
+			});
+
+			/*RED.library.create({
+				url: "templates",
+				type: "template",
+				editor: that.editor,
+				fields: ['name', 'format', 'output', 'syntax'],
+				ext: "txt"
+			});*/
+
+			RED.popover.tooltip($("#node-template-expand-editor"), RED._("node-red:common.label.expand"));
+			$("#node-template-expand-editor").on("click", function (e) {
+				e.preventDefault();
+				const value = that.editor.getValue();
+				that.editor.saveView();
+				RED.editor.editText({
+					mode: $("#node-input-format").val(),
+					value: value,
+					stateId: stateId,
+					width: "Infinity",
+					focus: true,
+					complete: function (v, cursor) {
+						that.editor.setValue(v, -1);
+						setTimeout(function () {
+							that.editor.restoreView();
+							that.editor.focus();
+						}, 250);
+					}
+				})
+			})
+		},
+		oneditsave: function () {
+			this.value = this.editor.getValue();
+			console.log("this.value")
+			console.log(this.value);
+			this.editor.destroy();
+			delete this.editor;
+		},
+		oneditcancel: function () {
+			this.editor.destroy();
+			delete this.editor;
+		},
+		oneditresize: function (size) {
+			var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+			var height = $("#dialog-form").height();
+			for (var i = 0; i < rows.length; i++) {
+				height -= $(rows[i]).outerHeight(true);
+			}
+			var editorRow = $("#dialog-form>div.node-text-editor-row");
+			height -= (parseInt(editorRow.css("marginTop")) + parseInt(editorRow.css("marginBottom")));
+			$("#dialog-form .node-text-editor").css("height", height + "px");
+			this.editor.resize();
+		}
+
+	});
+</script>
+
+<script type="text/html" data-help-name="mobilex-detail">
 </script>

@@ -1,21 +1,24 @@
-const mustache = require("mustache");
+const nun = require("nunjucks");
+const { buildTargetPath } = require("../../util/join_helper");
 
 module.exports = function (RED) {
   function MobilexTemplateNode(config) {
     RED.nodes.createNode(this, config);
-    var node = this;
 
-    node.on("input", function (msg) {
+    var node = this;
+    // node.outputs = config.outputs;
+
+    node.on("input", function (msg, send, done) {
       const flow = node.context().flow;
       try {
         let node_input = msg.input;
         let templateData = {
-          template: mustache.render(config.template, node_input),
-          title: mustache.render(config.title, node_input),
-          background: mustache.render(config.background, node_input),
-          color: mustache.render(config.color, node_input),
+          template: nun.renderString(config.template, node_input),
+          title: nun.renderString(config.title, node_input),
+          background: nun.renderString(config.background, node_input),
+          color: nun.renderString(config.color, node_input),
           actions: [],
-          itemList: [],
+          itemsList: [],
         };
 
         const temTab = flow.get("tab");
@@ -30,8 +33,8 @@ module.exports = function (RED) {
           msg.index = page.pageContent.groupList.length - 1;
         }
         msg.topic = "groupList";
-        msg.expectNumberCountsOutput = node.wires[0].length;
-        node.send(msg);
+        msg.path = buildTargetPath(msg.path, ["groupList", msg.index]);
+        send(msg);
       } catch (err) {
         node.error("Erro ao processar o template", err);
       }

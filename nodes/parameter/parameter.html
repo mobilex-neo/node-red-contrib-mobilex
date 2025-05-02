@@ -1,0 +1,140 @@
+<script type="text/javascript">
+	RED.nodes.registerType('mobilex-parameter', {
+		category: 'mobileX Front',
+		color: '#ff9966',
+		icon: 'font-awesome/fa-cogs',
+		inputs: 1,
+		outputs: 1,
+		defaults: {
+			name: {value: ""},
+			title: {value: "actionConfirmation"},
+			parameters: {value: []},
+			form: {value: ""}
+		},
+		label: function () {
+			return "MobileX Parameter";
+		},
+
+		oneditprepare: function () {
+			let node = this;
+
+			// Esconder ou mostrar campos baseado na seleção
+			$("#textInputDiv").hide();
+			if (node.title === "initialSearchForm") {
+				$("#textInputDiv").show();
+				$("#parametersDiv").hide();
+			} else {
+				$("#textInputDiv").hide();
+				$("#parametersDiv").show();
+			}
+
+			$("#titleSelect").val(node.title);
+			$("#titleSelect").change(function () {
+				let valor = $(this).val();
+				if (valor == "initialSearchForm") {
+					$("#textInputDiv").show();
+					$("#parametersDiv").hide();
+				} else {
+					$("#textInputDiv").hide();
+					$("#parametersDiv").show();
+				}
+				node.title = valor;
+			});
+
+			// Limpar tabela antes de preencher
+			$("#params").empty();
+
+			// Preencher tabela com dados já salvos
+			console.log(`Esta aqui o preencimento = ${node.parameters}`)
+			if (node.parameters && node.parameters.length > 0) {
+				let params = JSON.parse(node.parameters);
+				params.forEach(row => {
+					$("#params").append(`
+                    <tr>
+                        <td><input type="text" class="key" value="${row.key}"></td>
+                        <td><input type="text" class="value" value="${row.value}"></td>
+                        <td><button type="button" class="remove-row">Remover</button></td>
+                    </tr>
+                `);
+				});
+			}
+
+			// Evento para adicionar uma nova linha
+			$("#add-row").off("click").on("click", function () {
+				let newRow = `<tr>
+                <td><input type="text" class="key" placeholder="Chave"></td>
+                <td><input type="text" class="value" placeholder="Valor"></td>
+                <td><button type="button" class="remove-row">Remover</button></td>
+            </tr>`;
+				$("#params").append(newRow);
+			});
+
+			// Evento para remover uma linha da tabela
+			$(document).off("click", ".remove-row").on("click", ".remove-row", function () {
+				$(this).closest("tr").remove();
+			});
+		},
+
+		oneditsave: function () {
+			let tableData = [];
+
+			// Percorre as linhas da tabela e captura os valores dos inputs
+			$("#params tr").each(function () {
+				let key = $(this).find(".key").val().trim();
+				let value = $(this).find(".value").val().trim();
+				console.log(`Linha ${i}:`, {key, value})
+
+				if (key !== "" && value !== "") {
+					tableData.push({key, value});
+				}
+			});
+
+			// Salvar os valores no nó
+			this.parameters = tableData;
+			this.title = $("#titleSelect").val();
+
+			$("#node-input-parameters").val(JSON.stringify(tableData));
+
+			console.log("Tabela salva:", this.parameters);
+		}
+	});
+</script>
+
+<script type="text/html" data-template-name="mobilex-parameter">
+			<div class="form-row">
+				<label for="titleSelect">Selecione um título:</label>
+				<select id="titleSelect">
+						<option value="initialSearchForm">initialSearchForm</option>
+						<option value="formParameters">formParameters</option>
+						<option value="actionConfirmation">actionConfirmation</option>
+						<option value="querystring">querystring</option>
+				</select>
+			</div>
+
+			<div class="form-row" id="textInputDiv">
+					<label for="textInput">Valor:</label>
+					<input type="text" id="node-input-form">
+			</div>
+			
+			<div class="form-row" id="parametersDiv">
+					<label>Parâmetros</label>
+					<table class="parameter-table">
+							<thead>
+									<tr>
+											<th>Chave</th>
+											<th>Valor</th>
+											<th>Ações</th>
+									</tr>
+							</thead>
+							<tbody id="params">
+									<tr>
+											<td><input type="text" class="key" placeholder="Chave"></td>
+											<td><input type="text" class="value" placeholder="Valor"></td>
+											<td><button type="button" class="remove-row">Remover</button></td>
+									</tr>
+							</tbody>
+					</table>
+					<input type="hidden" id="node-input-parameters">
+					<button type="button btn-primary" id="add-row">Adicionar Linha</button>
+			</div>
+</script>
