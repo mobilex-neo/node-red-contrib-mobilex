@@ -9,7 +9,6 @@
 			componentes: {value: []},
 			tab: {value: false},
 			outputs: {value: 1, validate: RED.validators.number()},
-			timeout: {value: 1},
 			wiresTo: {value: false},
 		},
 		label: function () {
@@ -33,7 +32,6 @@
 		oneditsave: function () {
 			this.componentes = $("#node-input-componentes").val() || [];
 			this.tab = $("#node-input-tab").val();
-			this.timeout = $("#node-input-timeout").val();
 			this.path = $("#node-input-path").val();
 			this.wiresTo = $("#node-input-wiresTo").val();
 		}
@@ -54,18 +52,6 @@
 		<div class="form-row" id="contem-tab">
 			<label for="tab">Conteúdo da página será dividido em tabulação?</label>
 			<input type="checkbox" name="tab" id="node-input-tab"></input>
-		</div>
-		<div class="form-row" id="timeout">
-			<label for="timeout">Timeout da requisição</label>
-			<input type="text" name="timeout" id="node-input-timeout"></input>
-		</div>
-		<div class="form-row" id="path">
-			<label for="path">Chaminho do array no json</label>
-			<input type="text" name="path" id="node-input-path"></input>
-		</div>
-		<div class="form-row" id="number_wire">
-			<label for="wires">Aguardar pela quantidades de mensagem</label>
-			<input type="checkbox" name="wires" id="node-input-wiresTo"></input>
 		</div>
 		<div class="form-row" style="display: inline-block; margin-right: 50px;"> -->
 			<label for="node-input-outputs"><i class="fa fa-random"></i> <span data-i18n="function.label.outputs"></span></label>

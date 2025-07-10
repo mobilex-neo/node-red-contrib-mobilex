@@ -29,6 +29,7 @@ module.exports = function (RED) {
       const flow = this.context().flow;
 
       flow.set("tab", config.tab);
+      console.log(`Node wires Page ${node.wires}`);
 
       const obj = config.componentes.reduce((acc, key) => {
         if (config.tab && key === "pageContent") {
@@ -52,8 +53,7 @@ module.exports = function (RED) {
       flow.set("page", obj);
 
       msg.topic = "page";
-      msg.input = input_node;
-      msg.timeout = config.timeout;
+      msg.payload = input_node;
       msg.wiresTo = config.wiresTo;
       msgOutput = Array.from({ length: node.outputs }, (_, index) => [msg]);
       send(msgOutput);

@@ -6,14 +6,15 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     var node = this;
     node.on("input", function (msg, send, done) {
+      const input = msg.topic === "message" ? msg.input : msg.payload;
       let action = {
         order: parseInt(config.order) || 0,
-        name: nun.renderString(config.name || "", msg.input),
+        name: nun.renderString(config.name || "", input),
         publishLevel: parseInt(config.publishLevel) || 1,
         permissionLevel: parseInt(config.permissionLevel) || 1,
-        title: nun.renderString(config.title || "", msg.input),
-        icon: nun.renderString(config.icon || "", msg.input),
-        path: nun.renderString(config.path || "", msg.input),
+        title: nun.renderString(config.title || "", input),
+        icon: nun.renderString(config.icon || "", input),
+        path: nun.renderString(config.path || "", input),
         parameters: [],
       };
       console.log("ACTION ENVIO -----------------------");
@@ -64,6 +65,9 @@ module.exports = function (RED) {
           break;
         case "pageNavigation":
           page.pageNavigation.left.actions.push(action);
+          break;
+        case "message":
+          msg.payload.actions.push(action);
           break;
       }
       msg.topic = "Action";

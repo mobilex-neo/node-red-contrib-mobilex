@@ -11,7 +11,7 @@ module.exports = function (RED) {
     node.on("input", function (msg, send, done) {
       const flow = node.context().flow;
       try {
-        let node_input = msg.input;
+        let node_input = msg.payload;
         let templateData = {
           template: nun.renderString(config.template, node_input),
           title: nun.renderString(config.title, node_input),
@@ -23,13 +23,16 @@ module.exports = function (RED) {
 
         const temTab = flow.get("tab");
         const page = flow.get("page");
-        const index = msg.index_content;
+        const index = msg.index;
 
         if (temTab) {
           page.pageContent.contentList[index].groupList = [templateData];
           msg.index = page.pageContent.contentList[index].groupList.length - 1;
         } else {
-          page.pageContent.groupList = [templateData];
+          if (page.pageContent.groupList === null) {
+            page.pageContent.groupList = [];
+          }
+          page.pageContent.groupList.push(templateData);
           msg.index = page.pageContent.groupList.length - 1;
         }
         msg.topic = "groupList";
