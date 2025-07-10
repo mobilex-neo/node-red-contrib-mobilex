@@ -13,7 +13,7 @@ module.exports = function (RED) {
 
       const detail = {
         order: parseInt(config.order) || 0,
-        value: nun.renderString(config.value || "", msg.input),
+        value: nun.renderString(config.value || "", msg.payload),
       };
 
       if (msg.topic === "pageHeader") {

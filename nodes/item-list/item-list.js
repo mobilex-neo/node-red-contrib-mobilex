@@ -12,8 +12,8 @@ module.exports = function (RED) {
       let item = {
         publishLevel: parseInt(config.publishLevel) || 1,
         permissionLevel: parseInt(config.permissionLevel) || 1,
-        background: nun.renderString(config.background || "#FFF", msg.input),
-        color: nun.renderString(config.color || "#FFF", msg.input),
+        background: nun.renderString(config.background || "#FFF", msg.payload),
+        color: nun.renderString(config.color || "#FFF", msg.payload),
         details: [],
         actionDefault: parseInt(config.actionDefault) || 0,
         actions: [],

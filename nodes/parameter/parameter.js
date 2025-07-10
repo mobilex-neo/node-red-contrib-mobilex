@@ -46,8 +46,14 @@ module.exports = function (RED) {
         };
 
         try {
-          msg.path = buildTargetPath(msg.path, ["parameters"]);
-          insertAtPath(page, msg.path, objReturn);
+          if (msg.path.includes("message")) {
+            msg.path = msg.path.replace(/^message\./, "");
+            console.log(`PARAMETERS ${JSON.stringify(msg.payload)}`);
+            msg.payload.actions[index].parameters = [objReturn];
+          } else {
+            msg.path = buildTargetPath(msg.path, ["parameters"]);
+            insertAtPath(page, msg.path, objReturn);
+          }
         } catch (e) {
           console.log(`ERROR ${e}`);
         }
@@ -59,7 +65,6 @@ module.exports = function (RED) {
         // } else {
         //   page.groupList[index_host].it;
         // }
-        msg.payload = page;
         node.send(msg);
       } catch (err) {
         node.error("Erro ao processar os parâmetros", err);

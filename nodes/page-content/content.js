@@ -22,21 +22,19 @@ module.exports = function (RED) {
       let flow = this.context().flow;
       let temTab = flow.get("tab");
       const page = flow.get("page");
-
       let path;
 
       if (temTab) {
         page.pageContent.contentList.push(node.pageContent);
-        msg.index_content = page.pageContent.contentList.length - 1;
+        msg.index = page.pageContent.contentList.length - 1;
         path = "pageContent.contentList";
-        msg.path = buildTargetPath(path, [0]);
+        msg.path = buildTargetPath(path, [msg.index]);
       } else {
         page.pageContent = node.pageContent;
         path = "pageContent";
         msg.path = buildTargetPath(path, []);
       }
 
-      msg.payload = node.pageContent;
       node.send(msg);
     });
   }
